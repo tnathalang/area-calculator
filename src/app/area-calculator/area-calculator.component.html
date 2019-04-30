@@ -1,0 +1,50 @@
+<div class="container">
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="width">Width</label>
+      <input
+        type="number"
+        class="form-control"
+        id="width"
+        required
+        [(ngModel)]="width"
+        name="width"
+        (input)="onWidthChange()"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="length">Length</label>
+      <input
+        type="number"
+        class="form-control"
+        id="length"
+        required
+        [(ngModel)]="length"
+        name="length"
+        (input)="onLengthChange()"
+      />
+    </div>
+    <div class="form-group">
+      <label for="area">Area Unit</label>
+      <select
+        [(ngModel)]="currentUnit"
+        class="form-control"
+        id="unit"
+        name="unit"
+        required
+        (change)="onUnitChange()"
+      >
+        <option *ngFor="let u of units" [value]="u">{{ u }} </option>
+      </select>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-success"
+      (click)="onSaveClick(); heroForm.reset()"
+      [disabled]="!heroForm.form.valid"
+    >
+      Save
+    </button>
+  </form>
+</div>
