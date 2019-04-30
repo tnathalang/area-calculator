@@ -1,4 +1,4 @@
-<div [hidden]="submitted">
+<div>
   <div class="container">
     <h1>Area Calculator</h1>
     <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
@@ -43,7 +43,7 @@
   </div>
 </div>
 
-<div [hidden]="!submitted">
+<div [hidden]="!submitted" class="container">
   <h2>You calculated the following:</h2>
   <div class="row">
     <div class="col-xs-3">Name</div>
@@ -58,12 +58,12 @@
     <div class="col-xs-9">{{ model.length }}</div>
   </div>
   <div class="row">
-    <div class="col-xs-3">Unit</div>
-    <div class="col-xs-9">{{ model.unit }}</div>
-  </div>
-  <div class="row">
     <div class="col-xs-3">Area</div>
     <div class="col-xs-9">{{ model.area }}</div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3">Unit</div>
+    <div class="col-xs-9">{{ model.unit }}</div>
   </div>
   <br />
 </div>

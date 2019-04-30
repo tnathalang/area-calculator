@@ -9,13 +9,9 @@ import { Hero } from "../hero";
 export class HeroFormComponent implements OnInit {
   constructor() {}
 
-  model = new Hero(18, "Area Calculator", 0, 0, "", 0);
+  model = new Hero(18, "Area Calculator", 0, 0, "Feet", 0);
 
   submitted = false;
-
-  onSubmit() {
-    this.submitted = true;
-  }
 
   areaValue: number | null;
   unitValue: string | undefined;
@@ -45,6 +41,7 @@ export class HeroFormComponent implements OnInit {
     this.nameValue = name;
   }
   onSaveClick() {
+    this.submitted = true;
     this.model.id += 1;
     this.model.area = this.areaValue;
     this.model.length = this.lengthValue;
