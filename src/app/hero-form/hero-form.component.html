@@ -44,7 +44,32 @@
   </div>
 </div>
 
-<div class="container"></div>
+<div class="container" *ngIf="data != null && data.length != 0">
+  <h2>previously calculated:</h2>
+  <ol *ngFor="let d of data">
+    <div class="row">
+      <div class="col-xs-3">Name:</div>
+      <div class="col-xs-9">{{ d.name }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Width:</div>
+      <div class="col-xs-9">{{ d.width }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Length:</div>
+      <div class="col-xs-9">{{ d.length }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Area:</div>
+      <div class="col-xs-9">{{ d.area }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Unit:</div>
+      <div class="col-xs-9">{{ d.unit }}</div>
+    </div>
+  </ol>
+  <br />
+</div>
 
 <div [hidden]="!submitted" class="container">
   <h2>You calculated the following:</h2>
