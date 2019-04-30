@@ -29,6 +29,7 @@
           lengthValue &&
           nameValue != null
         "
+        [hidden]="submitted"
       >
         Area of {{ nameValue != null ? nameValue : "missing name" }}
 
@@ -43,26 +44,28 @@
   </div>
 </div>
 
+<div class="container"></div>
+
 <div [hidden]="!submitted" class="container">
   <h2>You calculated the following:</h2>
   <div class="row">
-    <div class="col-xs-3">Name</div>
+    <div class="col-xs-3">Name:</div>
     <div class="col-xs-9">{{ model.name }}</div>
   </div>
   <div class="row">
-    <div class="col-xs-3">Width</div>
+    <div class="col-xs-3">Width:</div>
     <div class="col-xs-9">{{ model.width }}</div>
   </div>
   <div class="row">
-    <div class="col-xs-3">Length</div>
+    <div class="col-xs-3">Length:</div>
     <div class="col-xs-9">{{ model.length }}</div>
   </div>
   <div class="row">
-    <div class="col-xs-3">Area</div>
+    <div class="col-xs-3">Area:</div>
     <div class="col-xs-9">{{ model.area }}</div>
   </div>
   <div class="row">
-    <div class="col-xs-3">Unit</div>
+    <div class="col-xs-3">Unit:</div>
     <div class="col-xs-9">{{ model.unit }}</div>
   </div>
   <br />
