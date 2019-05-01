@@ -50,6 +50,10 @@
     <div class="row">
       <div class="col-xs-3">Name:</div>
       <div class="col-xs-9">{{ d.name }}</div>
+      <button (click)="inputBox()">Edit</button>
+      <div *ngIf="displayBoxInput == true">
+        <input type="text" />
+      </div>
     </div>
     <div class="row">
       <div class="col-xs-3">Width:</div>

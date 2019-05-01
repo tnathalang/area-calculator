@@ -22,6 +22,8 @@ export class HeroFormComponent implements OnInit {
   lengthValue: number | null;
   nameValue: string | undefined;
 
+  private displayBoxInput = false;
+
   ngOnInit() {
     this.data = this.getLocalStorage();
   }
@@ -56,7 +58,7 @@ export class HeroFormComponent implements OnInit {
     this.model.width = this.widthValue;
     this.model.unit = this.unitValue;
     this.setLocalStorage();
-    this.model = new Hero(this.model.id, "Area Calculator", 0, 0, "Feet", 0);
+    this.model = new Hero(this.model.id, "", 0, 0, "Feet", 0);
   }
 
   setLocalStorage() {
@@ -69,5 +71,9 @@ export class HeroFormComponent implements OnInit {
     var data = JSON.parse(rawData);
     // this.data = data
     return data;
+  }
+
+  inputBox() {
+    this.displayBoxInput = true;
   }
 }
