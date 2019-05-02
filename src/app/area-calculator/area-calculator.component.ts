@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  EventEmitter,
+  Output,
+  OnChanges
+} from "@angular/core";
 import { Hero } from "../hero";
 
 enum Unit {
@@ -15,13 +22,16 @@ export class AreaCalculatorComponent {
   constructor() {}
 
   units = [Unit.Feet, Unit.Meter];
+
+  @Input()
+  width: number;
+  @Input()
+  length: number;
+  @Input()
   currentUnit = this.units[0];
 
   @Input()
   submitted = false;
-
-  width: number;
-  length: number;
 
   @Output()
   areaChange = new EventEmitter<number | null>();
@@ -39,6 +49,7 @@ export class AreaCalculatorComponent {
   saveClick = new EventEmitter();
 
   onSaveClick() {
+    this.onChange();
     this.saveClick.emit();
   }
 

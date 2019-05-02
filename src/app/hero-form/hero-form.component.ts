@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Hero } from "../hero";
 import { getLocaleNumberSymbol } from "@angular/common";
+import { FormArray, FormGroup, FormControl, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-hero-form",
@@ -10,22 +11,32 @@ import { getLocaleNumberSymbol } from "@angular/common";
 export class HeroFormComponent implements OnInit {
   constructor() {}
 
-  model = new Hero(18, "Area Calculator", 0, 0, "Feet", 0);
+  model: Hero;
+  lastSavedModel: Hero;
 
   submitted = false;
 
+  // set data(value: Hero[]) {
+  //   debugger;
+  //   this.dataValue = value;
+  // }
+
+  // get data() {
+  //   return this.dataValue;
+  // }
+
   data: Hero[] = [];
 
-  areaValue: number | null;
-  unitValue: string | undefined = "Feet";
-  widthValue: number | null;
-  lengthValue: number | null;
-  nameValue: string | undefined;
-
-  private displayBoxInput = false;
+  editElementId: number | undefined;
 
   ngOnInit() {
     this.data = this.getLocalStorage();
+
+    const lastHero = this.data[this.data.length - 1];
+
+    const id = lastHero ? lastHero.id : 0;
+
+    this.model = new Hero(id, "", 0, 0, "Feet", 0);
   }
 
   get diagnostic() {
@@ -33,36 +44,49 @@ export class HeroFormComponent implements OnInit {
   }
 
   onAreaChange(value: number | null) {
-    this.areaValue = value;
+    this.model.area = value;
   }
   onUnitChange(unit: string) {
-    this.unitValue = unit;
+    this.model.unit = unit;
   }
   onWidthChange(width: number | null) {
-    this.widthValue = width;
+    this.model.width = width;
   }
   onLengthChange(length: number | null) {
-    this.lengthValue = length;
+    this.model.length = length;
   }
 
   onNameChange(name: string) {
-    this.nameValue = name;
+    this.model.name = name;
   }
 
   onSaveClick() {
-    this.submitted = true;
-    this.model.id += 1;
-    this.model.name = this.nameValue;
-    this.model.area = this.areaValue;
-    this.model.length = this.lengthValue;
-    this.model.width = this.widthValue;
-    this.model.unit = this.unitValue;
+    if (this.editElementId != undefined) {
+      var updateElement = this.data.find(x => x.id == this.editElementId);
+      updateElement.name = this.model.name;
+      updateElement.length = this.model.length;
+      updateElement.width = this.model.width;
+      updateElement.unit = this.model.unit;
+      this.editElementId = undefined;
+    } else {
+      this.submitted = true;
+      this.model = new Hero(
+        this.model.id,
+        this.model.name,
+        this.model.width,
+        this.model.length,
+        this.model.unit,
+        this.model.area
+      );
+      this.data.push(this.model);
+    }
     this.setLocalStorage();
-    this.model = new Hero(this.model.id, "", 0, 0, "Feet", 0);
+
+    this.lastSavedModel = this.model;
+    this.model = new Hero(this.model.id + 1, "", 0, 0, "Feet", 0);
   }
 
   setLocalStorage() {
-    this.data.push(this.model);
     localStorage.setItem("myData", JSON.stringify(this.data));
   }
 
@@ -70,10 +94,18 @@ export class HeroFormComponent implements OnInit {
     var rawData = localStorage.getItem("myData");
     var data = JSON.parse(rawData);
     // this.data = data
-    return data;
+    return data != null ? data : [];
   }
 
-  inputBox() {
-    this.displayBoxInput = true;
+  updateLocalStorage(d: Hero) {
+    this.model = new Hero(d.id, d.name, d.width, d.length, d.unit, d.area);
+    this.editElementId = d.id;
+
+    // var storedValues = localStorage.getItem("myData");
+    // var shapesFromStorage = JSON.parse(storedValues);
+
+    // able to modify the fields seperately
+
+    // localStorage.setItem("myData", JSON.stringify(shapesFromStorage));
   }
 }

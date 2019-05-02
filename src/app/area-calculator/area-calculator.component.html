@@ -1,5 +1,5 @@
 <div class="container">
-  <form (ngSubmit)="onSubmit()" #areaForm="ngForm">
+  <form #areaForm="ngForm">
     <div class="form-group">
       <label for="width">Width</label>
       <input
@@ -41,7 +41,7 @@
     <button
       type="submit"
       class="btn btn-success"
-      (click)="onSaveClick(); areaForm.reset()"
+      (click)="onSaveClick()"
       [disabled]="!areaForm.form.valid"
     >
       Save
