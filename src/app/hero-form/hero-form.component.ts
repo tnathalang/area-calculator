@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Hero } from "../hero";
 import { getLocaleNumberSymbol } from "@angular/common";
 import { FormArray, FormGroup, FormControl, Validators } from "@angular/forms";
+import { RectangleService } from "../rectangle.service";
 
 @Component({
   selector: "app-hero-form",
@@ -9,7 +10,7 @@ import { FormArray, FormGroup, FormControl, Validators } from "@angular/forms";
   styleUrls: ["./hero-form.component.less"]
 })
 export class HeroFormComponent implements OnInit {
-  constructor() {}
+  constructor(private rectangleService: RectangleService) {}
 
   model: Hero;
   lastSavedModel: Hero;
@@ -30,7 +31,8 @@ export class HeroFormComponent implements OnInit {
   editElementId: number | undefined;
 
   ngOnInit() {
-    this.data = this.getLocalStorage();
+    this.getRectangles();
+    // this.data = this.getLocalStorage();
 
     const lastHero = this.data[this.data.length - 1];
 
@@ -90,22 +92,21 @@ export class HeroFormComponent implements OnInit {
     localStorage.setItem("myData", JSON.stringify(this.data));
   }
 
-  getLocalStorage() {
-    var rawData = localStorage.getItem("myData");
-    var data = JSON.parse(rawData);
-    // this.data = data
-    return data != null ? data : [];
-  }
+  // getLocalStorage() {
+  //   var rawData = localStorage.getItem("myData");
+  //   var data = JSON.parse(rawData);
+  //   // this.data = data
+  //   return data != null ? data : [];
+  // }
 
   updateLocalStorage(d: Hero) {
     this.model = new Hero(d.id, d.name, d.width, d.length, d.unit, d.area);
     this.editElementId = d.id;
+  }
 
-    // var storedValues = localStorage.getItem("myData");
-    // var shapesFromStorage = JSON.parse(storedValues);
-
-    // able to modify the fields seperately
-
-    // localStorage.setItem("myData", JSON.stringify(shapesFromStorage));
+  getRectangles(): void {
+    this.rectangleService
+      .getRectangle()
+      .subscribe(rectangles => (this.data = rectangles));
   }
 }
