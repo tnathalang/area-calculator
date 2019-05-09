@@ -1,8 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Hero } from "../hero";
-import { getLocaleNumberSymbol } from "@angular/common";
-import { FormArray, FormGroup, FormControl, Validators } from "@angular/forms";
 import { RectangleService } from "../rectangle.service";
+import { map, mergeMap } from "rxjs/operators";
 
 @Component({
   selector: "app-hero-form",
@@ -31,7 +30,16 @@ export class HeroFormComponent implements OnInit {
   editElementId: number | undefined;
 
   ngOnInit() {
-    this.getRectangles();
+    this.getRectangles()
+      .pipe(
+        mergeMap(value =>
+          this.getRectanglesFromBack().pipe(
+            map(value2 => [...value, ...value2])
+          )
+        )
+      )
+      .subscribe(value => (this.data = value));
+
     // this.data = this.getLocalStorage();
 
     const lastHero = this.data[this.data.length - 1];
@@ -104,9 +112,7 @@ export class HeroFormComponent implements OnInit {
     this.editElementId = d.id;
   }
 
-  getRectangles(): void {
-    this.rectangleService
-      .getRectangle()
-      .subscribe(rectangles => (this.data = rectangles));
-  }
+  getRectangles = () => this.rectangleService.getRectangle();
+
+  getRectanglesFromBack = () => this.rectangleService.getAllRectangles();
 }

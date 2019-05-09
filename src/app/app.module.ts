@@ -7,11 +7,16 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HeroFormComponent } from "./hero-form/hero-form.component";
 import { AreaCalculatorComponent } from "./area-calculator/area-calculator.component";
-import { MessagesComponent } from './messages/messages.component';
+import { MessagesComponent } from "./messages/messages.component";
 
 @NgModule({
-  declarations: [AppComponent, HeroFormComponent, AreaCalculatorComponent, MessagesComponent],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  declarations: [
+    AppComponent,
+    HeroFormComponent,
+    AreaCalculatorComponent,
+    MessagesComponent
+  ],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent]
 })
