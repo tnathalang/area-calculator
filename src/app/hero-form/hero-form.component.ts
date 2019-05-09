@@ -91,6 +91,7 @@ export class HeroFormComponent implements OnInit {
       this.data.push(this.model);
     }
     this.setLocalStorage();
+    this.postRectangles(this.model);
 
     this.lastSavedModel = this.model;
     this.model = new Hero(this.model.id + 1, "", 0, 0, "Feet", 0);
@@ -115,4 +116,21 @@ export class HeroFormComponent implements OnInit {
   getRectangles = () => this.rectangleService.getRectangle();
 
   getRectanglesFromBack = () => this.rectangleService.getAllRectangles();
+
+  postRectangles = (d: Hero) => {
+    const newRectangle = new Hero(
+      d.id,
+      d.name,
+      d.width,
+      d.length,
+      d.unit,
+      d.area
+    );
+    this.rectangleService
+      .postNewRectanglesToBack(newRectangle)
+      .subscribe(rectangleId => {
+        newRectangle.id = rectangleId;
+        this.data.push(newRectangle);
+      });
+  };
 }
