@@ -38,13 +38,35 @@
         <option *ngFor="let u of units" [value]="u">{{ u }} </option>
       </select>
     </div>
-    <button
-      type="submit"
-      class="btn btn-success"
-      (click)="onSaveClick()"
-      [disabled]="!areaForm.form.valid"
-    >
-      Save
-    </button>
+    <!-- <label class="switch">
+      <input type="checkbox" />
+      <span class="slider round"></span>
+    </label> -->
+    <div>
+      <input
+        type="checkbox"
+        (change)="checkBoxvalue($event)"
+        [value]="checked"
+      />
+      Save to Local Storage
+      <button
+        type="submit"
+        class="btn btn-success"
+        (click)="onSaveClick()"
+        [disabled]="!areaForm.form.valid"
+        *ngIf="!checked"
+      >
+        Save
+      </button>
+      <button
+        type="submit"
+        class="btn btn-success"
+        (click)="onSaveClick()"
+        [disabled]="!areaForm.form.valid"
+        *ngIf="checked"
+      >
+        Save to local Storage
+      </button>
+    </div>
   </form>
 </div>

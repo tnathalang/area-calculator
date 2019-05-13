@@ -6,7 +6,7 @@ import {
   Output,
   OnChanges
 } from "@angular/core";
-import { Hero } from "../hero";
+import { Rectangle } from "../hero";
 
 enum Unit {
   Feet = "Feet",
@@ -22,6 +22,8 @@ export class AreaCalculatorComponent {
   constructor() {}
 
   units = [Unit.Feet, Unit.Meter];
+
+  checked = false;
 
   @Input()
   width: number;
@@ -53,6 +55,11 @@ export class AreaCalculatorComponent {
     this.saveClick.emit();
   }
 
+  onSaveClickToLS() {
+    this.onChange();
+    this.saveClick.emit();
+  }
+
   onChange = () => {
     if (this.width == null || this.length == null) {
       this.areaChange.emit(null);
@@ -76,4 +83,9 @@ export class AreaCalculatorComponent {
   onUnitChange = () => {
     this.unitChange.emit(this.currentUnit);
   };
+
+  checkBoxvalue(event) {
+    console.log(event.target.checked);
+    this.checked = event.target.checked;
+  }
 }

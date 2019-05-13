@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
-import { Hero } from "./hero";
+import { Rectangle } from "./hero";
 import { Observable, of } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { catchError } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root"
@@ -10,7 +9,9 @@ import { catchError } from "rxjs/operators";
 export class RectangleService {
   constructor(private http: HttpClient) {}
 
-  getRectangle(): Observable<Hero[]> {
+  apiUrl = "https://localhost:5001/api/areacalcultor";
+
+  getRectangle(): Observable<Rectangle[]> {
     var rawData = localStorage.getItem("myData");
     var data = JSON.parse(rawData);
     // this.data = data
@@ -19,13 +20,14 @@ export class RectangleService {
   }
 
   getAllRectangles() {
-    return this.http.get<Hero[]>("https://localhost:5001/api/areacalcultor");
+    return this.http.get<Rectangle[]>(this.apiUrl);
   }
 
-  postNewRectanglesToBack(hero: Hero) {
-    return this.http.post<number>(
-      "https://localhost:5001/api/areacalcultor",
-      hero
-    );
+  postNewRectanglesToBack(rectangle: Rectangle) {
+    return this.http.post<number>(this.apiUrl, rectangle);
+  }
+
+  putNewRectanglesToBack(rectangle: Rectangle) {
+    return this.http.put<number>(this.apiUrl + rectangle.id, rectangle);
   }
 }

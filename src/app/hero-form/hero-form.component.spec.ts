@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { HeroFormComponent } from './hero-form.component';
+import { HeroFormComponent } from "./hero-form.component";
 
-describe('HeroFormComponent', () => {
+describe("HeroFormComponent", () => {
   let component: HeroFormComponent;
   let fixture: ComponentFixture<HeroFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeroFormComponent ]
-    })
-    .compileComponents();
+      declarations: [HeroFormComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('HeroFormComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

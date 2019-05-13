@@ -9,6 +9,8 @@ import { HeroFormComponent } from "./hero-form/hero-form.component";
 import { AreaCalculatorComponent } from "./area-calculator/area-calculator.component";
 import { MessagesComponent } from "./messages/messages.component";
 
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,7 +18,14 @@ import { MessagesComponent } from "./messages/messages.component";
     AreaCalculatorComponent,
     MessagesComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+
+    HttpClientModule,
+    BrowserAnimationsModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

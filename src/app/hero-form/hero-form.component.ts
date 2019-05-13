@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Hero } from "../hero";
+import { Rectangle } from "../hero";
 import { RectangleService } from "../rectangle.service";
 import { map, mergeMap } from "rxjs/operators";
 
@@ -11,8 +11,8 @@ import { map, mergeMap } from "rxjs/operators";
 export class HeroFormComponent implements OnInit {
   constructor(private rectangleService: RectangleService) {}
 
-  model: Hero;
-  lastSavedModel: Hero;
+  model: Rectangle;
+  lastSavedModel: Rectangle;
 
   submitted = false;
 
@@ -25,7 +25,7 @@ export class HeroFormComponent implements OnInit {
   //   return this.dataValue;
   // }
 
-  data: Hero[] = [];
+  data: Rectangle[] = [];
 
   editElementId: number | undefined;
 
@@ -46,7 +46,7 @@ export class HeroFormComponent implements OnInit {
 
     const id = lastHero ? lastHero.id : 0;
 
-    this.model = new Hero(id, "", 0, 0, "Feet", 0);
+    this.model = new Rectangle(id, "", 0, 0, "Feet", 0);
   }
 
   get diagnostic() {
@@ -70,7 +70,22 @@ export class HeroFormComponent implements OnInit {
     this.model.name = name;
   }
 
+  saveChanges() {
+    this.doOnSaveChanges(rectangle => {
+      this.postLocalStorage(rectangle);
+      this.postRectangles(rectangle);
+    });
+  }
+
   onSaveClick() {
+    this.doOnSaveChanges(this.postRectangles);
+  }
+
+  onSaveClickToLocal() {
+    this.doOnSaveChanges(this.postLocalStorage);
+  }
+
+  private doOnSaveChanges = (toExecute: (rect: Rectangle) => void) => {
     if (this.editElementId != undefined) {
       var updateElement = this.data.find(x => x.id == this.editElementId);
       updateElement.name = this.model.name;
@@ -78,9 +93,11 @@ export class HeroFormComponent implements OnInit {
       updateElement.width = this.model.width;
       updateElement.unit = this.model.unit;
       this.editElementId = undefined;
+      // this.putRectangles(this.model);
+      // this.setLocalStorage(this.model);
     } else {
       this.submitted = true;
-      this.model = new Hero(
+      this.model = new Rectangle(
         this.model.id,
         this.model.name,
         this.model.width,
@@ -89,16 +106,22 @@ export class HeroFormComponent implements OnInit {
         this.model.area
       );
       this.data.push(this.model);
+
+      toExecute(this.model);
     }
-    this.setLocalStorage();
-    this.postRectangles(this.model);
 
     this.lastSavedModel = this.model;
-    this.model = new Hero(this.model.id + 1, "", 0, 0, "Feet", 0);
-  }
+    this.model = new Rectangle(this.model.id + 1, "", 0, 0, "Feet", 0);
+  };
 
-  setLocalStorage() {
-    localStorage.setItem("myData", JSON.stringify(this.data));
+  postLocalStorage(newRectangle: Rectangle) {
+    const data = JSON.parse(localStorage.getItem("myData"));
+
+    const rectangles = data ? (JSON.parse(data) as Rectangle[]) : [];
+
+    const rectanglesToSave = [...rectangles, newRectangle];
+
+    localStorage.setItem("myData", JSON.stringify(rectanglesToSave));
   }
 
   // getLocalStorage() {
@@ -108,8 +131,8 @@ export class HeroFormComponent implements OnInit {
   //   return data != null ? data : [];
   // }
 
-  updateLocalStorage(d: Hero) {
-    this.model = new Hero(d.id, d.name, d.width, d.length, d.unit, d.area);
+  updateLocalStorage(d: Rectangle) {
+    this.model = new Rectangle(d.id, d.name, d.width, d.length, d.unit, d.area);
     this.editElementId = d.id;
   }
 
@@ -117,8 +140,8 @@ export class HeroFormComponent implements OnInit {
 
   getRectanglesFromBack = () => this.rectangleService.getAllRectangles();
 
-  postRectangles = (d: Hero) => {
-    const newRectangle = new Hero(
+  postRectangles = (d: Rectangle) => {
+    const newRectangle = new Rectangle(
       d.id,
       d.name,
       d.width,
@@ -126,11 +149,14 @@ export class HeroFormComponent implements OnInit {
       d.unit,
       d.area
     );
-    this.rectangleService
-      .postNewRectanglesToBack(newRectangle)
-      .subscribe(rectangleId => {
+    this.rectangleService.postNewRectanglesToBack(newRectangle).subscribe(
+      rectangleId => {
         newRectangle.id = rectangleId;
         this.data.push(newRectangle);
-      });
+      },
+      () => console.log("successfully added new rectangle")
+    );
   };
+
+  putRectangles = () => {};
 }

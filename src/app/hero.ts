@@ -1,4 +1,4 @@
-export class Hero {
+export class Rectangle {
   constructor(
     public id: number,
     public name: string,
