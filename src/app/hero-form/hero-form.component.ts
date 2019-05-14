@@ -81,38 +81,9 @@ export class HeroFormComponent implements OnInit {
     this.doOnSaveChanges(this.postRectangles);
   }
 
-  onSaveClickToLocal() {
+  onSaveClickToLs() {
     this.doOnSaveChanges(this.postLocalStorage);
   }
-
-  private doOnSaveChanges = (toExecute: (rect: Rectangle) => void) => {
-    if (this.editElementId != undefined) {
-      var updateElement = this.data.find(x => x.id == this.editElementId);
-      updateElement.name = this.model.name;
-      updateElement.length = this.model.length;
-      updateElement.width = this.model.width;
-      updateElement.unit = this.model.unit;
-      this.editElementId = undefined;
-      // this.putRectangles(this.model);
-      // this.setLocalStorage(this.model);
-    } else {
-      this.submitted = true;
-      this.model = new Rectangle(
-        this.model.id,
-        this.model.name,
-        this.model.width,
-        this.model.length,
-        this.model.unit,
-        this.model.area
-      );
-      this.data.push(this.model);
-
-      toExecute(this.model);
-    }
-
-    this.lastSavedModel = this.model;
-    this.model = new Rectangle(this.model.id + 1, "", 0, 0, "Feet", 0);
-  };
 
   postLocalStorage(newRectangle: Rectangle) {
     const data = JSON.parse(localStorage.getItem("myData"));
@@ -158,5 +129,50 @@ export class HeroFormComponent implements OnInit {
     );
   };
 
-  putRectangles = () => {};
+  putRectangles = (d: Rectangle) => {
+    const newRectangle = new Rectangle(
+      d.id,
+      d.name,
+      d.width,
+      d.length,
+      d.unit,
+      d.area
+    );
+    this.rectangleService.putNewRectanglesToBack(newRectangle).subscribe(
+      rectangleId => {
+        newRectangle.id = rectangleId;
+        this.data.push(newRectangle);
+      },
+      () => console.log("successfully edited new rectangle")
+    );
+  };
+
+  private doOnSaveChanges = (toExecute: (rect: Rectangle) => void) => {
+    if (this.editElementId != undefined) {
+      var updateElement = this.data.find(x => x.id == this.editElementId);
+      updateElement.name = this.model.name;
+      updateElement.length = this.model.length;
+      updateElement.width = this.model.width;
+      updateElement.unit = this.model.unit;
+      this.editElementId = undefined;
+      // this.putRectangles(this.model);
+      // this.setLocalStorage(this.model);
+    } else {
+      this.submitted = true;
+      this.model = new Rectangle(
+        this.model.id,
+        this.model.name,
+        this.model.width,
+        this.model.length,
+        this.model.unit,
+        this.model.area
+      );
+      this.data.push(this.model);
+
+      toExecute(this.model);
+    }
+
+    this.lastSavedModel = this.model;
+    this.model = new Rectangle(this.model.id + 1, "", 0, 0, "Feet", 0);
+  };
 }

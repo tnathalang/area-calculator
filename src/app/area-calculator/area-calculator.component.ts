@@ -50,6 +50,9 @@ export class AreaCalculatorComponent {
   @Output()
   saveClick = new EventEmitter();
 
+  @Output()
+  saveClickToLs = new EventEmitter();
+
   onSaveClick() {
     this.onChange();
     this.saveClick.emit();
@@ -57,7 +60,7 @@ export class AreaCalculatorComponent {
 
   onSaveClickToLS() {
     this.onChange();
-    this.saveClick.emit();
+    this.saveClickToLs.emit();
   }
 
   onChange = () => {
@@ -85,7 +88,6 @@ export class AreaCalculatorComponent {
   };
 
   checkBoxvalue(event) {
-    console.log(event.target.checked);
     this.checked = event.target.checked;
   }
 }
