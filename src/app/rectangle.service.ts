@@ -4,7 +4,6 @@ import { Observable, of } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 
 @Injectable({
-  //provide root
   providedIn: "root"
 })
 export class RectangleService {
