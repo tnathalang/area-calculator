@@ -10,21 +10,35 @@ import { AreaCalculatorComponent } from "./area-calculator/area-calculator.compo
 import { MessagesComponent } from "./messages/messages.component";
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { SearchComponent } from "./search/search.component";
+import { Routes, RouterModule } from "@angular/router";
+import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
+
+const appRoutes: Routes = [
+  { path: "search", component: SearchComponent },
+  { path: "", redirectTo: "/", pathMatch: "full" },
+  { path: "**", component: PageNotFoundComponent }
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     HeroFormComponent,
     AreaCalculatorComponent,
-    MessagesComponent
+    MessagesComponent,
+    SearchComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true } //debug purposes
+    )
   ],
   providers: [],
   bootstrap: [AppComponent]
